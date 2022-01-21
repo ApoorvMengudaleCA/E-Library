@@ -10,3 +10,6 @@
 /E-Library.Business/bin
 /E-Library.DAL/obj/Debug
 /E-Library.DAL/bin
+/E-Library.WebAPI/bin
+/E-Library.WebAPI/obj/Debug
+/packages/EntityFramework.6.4.4
