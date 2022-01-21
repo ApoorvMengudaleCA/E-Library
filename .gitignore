@@ -1,0 +1,12 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/E-Library.Entities/bin
+/E-Library.Entities/obj/Debug
+/packages/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1
+/E-Library.Business/obj/Debug
+/E-Library.Business/bin
+/E-Library.DAL/obj/Debug
+/E-Library.DAL/bin
