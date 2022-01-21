@@ -163,6 +163,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -252,6 +253,20 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\E-Library.Business\E-Library.Business.csproj">
+      <Project>{d97130d3-40a0-448d-8146-6a688d93f5e2}</Project>
+      <Name>E-Library.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\E-Library.DAL\E-Library.DAL.csproj">
+      <Project>{5e4835a6-cb1b-4cf9-9b99-11235327a39a}</Project>
+      <Name>E-Library.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\E-Library.Entities\E-Library.Entities.csproj">
+      <Project>{5eaeb1fe-559c-453c-95df-08796fc2bb8e}</Project>
+      <Name>E-Library.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
