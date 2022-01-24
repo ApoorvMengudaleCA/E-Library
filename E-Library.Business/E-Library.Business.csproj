@@ -77,6 +77,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\BusinessBaseClass.cs" />
     <Compile Include="Contracts\IRoles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\RolesService.cs" />
@@ -90,7 +91,16 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\E-Library.DAL\E-Library.DAL.csproj">
+      <Project>{5E4835A6-CB1B-4CF9-9B99-11235327A39A}</Project>
+      <Name>E-Library.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\E-Library.Entities\E-Library.Entities.csproj">
+      <Project>{5eaeb1fe-559c-453c-95df-08796fc2bb8e}</Project>
+      <Name>E-Library.Entities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
