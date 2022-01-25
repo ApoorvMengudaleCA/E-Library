@@ -9,18 +9,20 @@
 
 namespace E_Library.DAL
 {
-    using System;
     using System.Data.Entity;
-    using System.Data.Entity.Infrastructure;
-    
+
     public partial class ELibraryEntities : DbContext
     {
         public ELibraryEntities()
             : base("name=ELibraryEntities")
         {
         }
-    
+
+
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Author> Authors { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<BookAuthorMapping> BookAuthorMappings { get; set; }
     }
 }

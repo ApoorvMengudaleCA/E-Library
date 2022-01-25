@@ -89,6 +89,15 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Author.cs">
+      <DependentUpon>ELibraryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Book.cs">
+      <DependentUpon>ELibraryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BookAuthorMapping.cs">
+      <DependentUpon>ELibraryDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ELibraryDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
