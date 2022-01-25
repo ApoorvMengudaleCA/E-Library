@@ -17,3 +17,5 @@
 /E-Library.Entities/obj/Release
 /E-Library.DAL/obj/Release
 /E-Library.Business/obj/Release
+/packages/Microsoft.AspNet.Cors.5.2.7
+/packages
