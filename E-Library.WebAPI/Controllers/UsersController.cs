@@ -7,20 +7,22 @@ using System.Web.Http;
 using E_Library.Business.Contracts;
 using E_Library.Business.Services;
 
+
 namespace E_Library.WebAPI.Controllers
 {
     //[Authorize]
-    [RoutePrefix("Roles")]
-    public class RolesController : ApiController
+    [RoutePrefix("Users")]
+    public class UsersController : ApiController
     {
-        IRoles RolesService = new RolesService(WebApiApplication.AppKeys);
+        IUsers UsersService = new UsersService(WebApiApplication.AppKeys);
+
         [HttpGet]
         [Route("GetAll")]
         public HttpResponseMessage RolesList()
         {
             try
             {
-                var result = RolesService.GetAll();
+                var result = UsersService.GetAll();
                 if (result != null)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, result);
@@ -42,7 +44,7 @@ namespace E_Library.WebAPI.Controllers
         {
             try
             {
-                var result = RolesService.GetData(ID)
+                var result = UsersService.GetData(ID)
 ;
                 if (result != null)
                 {
@@ -69,11 +71,11 @@ namespace E_Library.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-        public HttpResponseMessage Save(Entities.Roles roles)
+        public HttpResponseMessage Save(Entities.Users users)
         {
             try
             {
-                var result = RolesService.Save(roles);
+                var result = UsersService.Save(users);
                 return Request.CreateResponse(HttpStatusCode.OK, result);
             }
             catch (Exception ex)
@@ -91,11 +93,11 @@ namespace E_Library.WebAPI.Controllers
 
         [HttpGet]
         [Route("Delete")]
-        public HttpResponseMessage Delete(int Id, int UserId)
+        public HttpResponseMessage Delete(int ID, int UserId)
         {
             try
             {
-                bool result = RolesService.Delete(Id, UserId);
+                bool result = UsersService.Delete(ID, UserId);
                 if (result)
                     return Request.CreateResponse(HttpStatusCode.OK, true);
                 else
@@ -106,6 +108,5 @@ namespace E_Library.WebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, ex.ToString());
             }
         }
-
     }
 }

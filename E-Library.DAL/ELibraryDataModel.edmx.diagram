@@ -6,8 +6,8 @@
     <edmx:Diagrams>
       <Diagram DiagramId="50ccbe748cf74528ae5af7923f29ad22" Name="Diagram1">
         <EntityTypeShape EntityType="ELibraryDBModel.Role" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ELibraryDBModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="ELibraryDBModel.FK__Users__RoleId__267ABA7A" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ELibraryDBModel.User" Width="1.5" PointX="3" PointY="1.25" />
+        <AssociationConnector Association="ELibraryDBModel.FK__Users__RoleId__267ABA7A" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -19,8 +19,6 @@ namespace E_Library.DAL
         public string UserPassword { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> RoleId { get; set; }
-        public string UserRole { get; set; }
-        public string UserType { get; set; }
         public string DisplayName { get; set; }
         public string First_Name { get; set; }
         public string Last_Name { get; set; }

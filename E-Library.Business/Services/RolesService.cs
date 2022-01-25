@@ -57,14 +57,21 @@ namespace E_Library.Business.Services
                         .Where(x => x.RoleId == ID && x.IsDeleted == false)
                         .SingleOrDefault();
 
-                    edRoles.RoleId = daRoles.RoleId;
-                    edRoles.RoleName = daRoles.RoleName;
-                    edRoles.RoleLevel = daRoles.RoleLevel;
-                    edRoles.RoleType = daRoles.RoleType;
-                    edRoles.CreatedBy = daRoles.CreatedBy;
-                    edRoles.CreatedDate = daRoles.CreatedDate;
-                    edRoles.UpdatedBy = daRoles.UpdatedBy;
-                    edRoles.UpdatedDate = daRoles.UpdatedDate;
+                    if (daRoles != null)
+                    {
+                        edRoles.RoleId = daRoles.RoleId;
+                        edRoles.RoleName = daRoles.RoleName;
+                        edRoles.RoleLevel = daRoles.RoleLevel;
+                        edRoles.RoleType = daRoles.RoleType;
+                        edRoles.CreatedBy = daRoles.CreatedBy;
+                        edRoles.CreatedDate = daRoles.CreatedDate;
+                        edRoles.UpdatedBy = daRoles.UpdatedBy;
+                        edRoles.UpdatedDate = daRoles.UpdatedDate;
+                    }
+                    else
+                    {
+                        throw new Exception("Record Not Found");
+                    }
 
                     return edRoles;
                 }
@@ -87,7 +94,7 @@ namespace E_Library.Business.Services
                     {
                         if (Roles.RoleId > 0)
                         {
-                            var col = _context.Roles.Where(x => x.RoleId == Roles.RoleId).FirstOrDefault();
+                            var col = _context.Roles.Where(x => x.RoleId == Roles.RoleId && x.IsDeleted == false).FirstOrDefault();
                             if (col != null)
                             {
                                 DAL.Role model = new DAL.Role();
