@@ -13,3 +13,7 @@
 /E-Library.WebAPI/bin
 /E-Library.WebAPI/obj/Debug
 /packages/EntityFramework.6.4.4
+/E-Library.WebAPI/obj/Release
+/E-Library.Entities/obj/Release
+/E-Library.DAL/obj/Release
+/E-Library.Business/obj/Release
