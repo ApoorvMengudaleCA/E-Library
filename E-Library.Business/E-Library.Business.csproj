@@ -78,10 +78,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\BusinessBaseClass.cs" />
+    <Compile Include="Contracts\IAuthors.cs" />
+    <Compile Include="Contracts\IBooks.cs" />
     <Compile Include="Contracts\ILogin.cs" />
     <Compile Include="Contracts\IRoles.cs" />
     <Compile Include="Contracts\IUsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuthorsService.cs" />
+    <Compile Include="Services\BooksService.cs" />
     <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\RolesService.cs" />
     <Compile Include="Services\UsersService.cs" />

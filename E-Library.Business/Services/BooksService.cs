@@ -1,42 +1,43 @@
-﻿using E_Library.Business.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using E_Library.Business.Common;
 using E_Library.Business.Contracts;
 using E_Library.DAL;
 using E_Library.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace E_Library.Business.Services
 {
-    public class RolesService : BusinessBaseClass, IRoles
+    public class BooksService : BusinessBaseClass, IBooks
     {
         private readonly ELibraryEntities _context;
-        public RolesService(ApplicationAPIKeys keys) : base(keys)
+        public BooksService(ApplicationAPIKeys keys) : base(keys)
         {
             _context = new ELibraryEntities(SecurityKeys.DatabaseConnectionString);
         }
 
-        public List<Entities.Roles> GetAll()
+        public List<Entities.Books> GetAll()
         {
             try
             {
-                List<Entities.Roles> RoleList = new List<Entities.Roles>();
+                List<Entities.Books> BookList = new List<Entities.Books>();
 
                 using (_context)
                 {
-                    RoleList = _context.Roles.Where(x => x.IsDeleted == false).Select(x => new Entities.Roles
+                    BookList = _context.Books.Where(x => x.IsDeleted == false).Select(x => new Entities.Books
                     {
-                        RoleId = x.RoleId,
-                        RoleName = x.RoleName,
-                        RoleLevel = x.RoleLevel,
-                        RoleType = x.RoleType,
+                        BookId = x.BookId,
+                        BookImage = x.BookImage,
+                        BookName = x.BookName,
+                        ISBN = x.ISBN,
                         CreatedBy = x.CreatedBy,
                         CreatedDate = x.CreatedDate,
                         UpdatedBy = x.UpdatedBy,
                         UpdatedDate = x.UpdatedDate
                     }).ToList();
 
-                    return RoleList;
+                    return BookList;
                 }
             }
             catch (Exception ex)
@@ -45,34 +46,35 @@ namespace E_Library.Business.Services
             }
         }
 
-        public Entities.Roles GetData(int ID)
+        public Entities.Books GetData(int ID)
         {
             try
             {
-                Entities.Roles edRoles = new Entities.Roles();
+                Entities.Books edBooks = new Entities.Books();
                 using (_context)
                 {
-                    var daRoles = _context.Roles
-                        .Where(x => x.RoleId == ID && x.IsDeleted == false)
+                    var daBooks = _context.Books
+                        .Where(x => x.BookId == ID && x.IsDeleted == false)
                         .SingleOrDefault();
 
-                    if (daRoles != null)
+                    if (daBooks != null)
                     {
-                        edRoles.RoleId = daRoles.RoleId;
-                        edRoles.RoleName = daRoles.RoleName;
-                        edRoles.RoleLevel = daRoles.RoleLevel;
-                        edRoles.RoleType = daRoles.RoleType;
-                        edRoles.CreatedBy = daRoles.CreatedBy;
-                        edRoles.CreatedDate = daRoles.CreatedDate;
-                        edRoles.UpdatedBy = daRoles.UpdatedBy;
-                        edRoles.UpdatedDate = daRoles.UpdatedDate;
+                        edBooks.BookId = daBooks.BookId;
+                        edBooks.BookName = daBooks.BookName;
+                        edBooks.ISBN = daBooks.ISBN;
+                        edBooks.BookImage = daBooks.BookImage;
+                        edBooks.Description = daBooks.Description;
+                        edBooks.CreatedBy = daBooks.CreatedBy;
+                        edBooks.CreatedDate = daBooks.CreatedDate;
+                        edBooks.UpdatedBy = daBooks.UpdatedBy;
+                        edBooks.UpdatedDate = daBooks.UpdatedDate;
                     }
                     else
                     {
                         throw new Exception("Record Not Found");
                     }
 
-                    return edRoles;
+                    return edBooks;
                 }
             }
             catch (Exception ex)
@@ -81,7 +83,7 @@ namespace E_Library.Business.Services
             }
         }
 
-        public int Save(Entities.Roles Roles)
+        public int Save(Entities.Books Books)
         {
             int result = 0;
             try
@@ -91,44 +93,45 @@ namespace E_Library.Business.Services
                     int userID;
                     try
                     {
-                        if (Roles.RoleId > 0)
+                        if (Books.BookId > 0)
                         {
-                            var col = _context.Roles.Where(x => x.RoleId == Roles.RoleId && x.IsDeleted == false).FirstOrDefault();
+                            var col = _context.Books.Where(x => x.BookId == Books.BookId && x.IsDeleted == false).FirstOrDefault();
                             if (col != null)
                             {
-                                DAL.Role model = new DAL.Role();
-                                col.RoleName = Roles.RoleName;
-                                col.RoleLevel = Roles.RoleLevel;
-                                col.RoleType = Roles.RoleType;
+                                DAL.Book model = new DAL.Book();
+                                col.BookName = Books.BookName;
+                                col.BookImage = Books.BookImage;
+                                col.ISBN = Books.ISBN;
+                                col.Description = Books.Description;
                                 col.UpdatedDate = DateTime.UtcNow;
-                                col.UpdatedBy = Roles.UpdatedBy;
+                                col.UpdatedBy = Books.UpdatedBy;
                                 userID = Convert.ToInt32(col.UpdatedBy);
                                 _context.SaveChanges();
-                                result = col.RoleId;
+                                result = col.BookId;
                             }
                             else
                                 throw new Exception("Record Not Found");
                         }
                         else
                         {
-                            bool test = _context.Roles.Where(x => x.IsDeleted == false).Any(x => x.RoleName.ToUpper().Equals(Roles.RoleName.ToUpper()));
+                            bool test = _context.Books.Where(x => x.IsDeleted == false).Any(x => x.BookName.ToUpper().Equals(Books.BookName.ToUpper()));
                             if (!test)
                             {
-                                DAL.Role model = new DAL.Role();
-                                model.RoleName = Roles.RoleName;
-                                model.RoleLevel = Roles.RoleLevel;
-                                model.RoleType = Roles.RoleType;
+                                DAL.Book model = new DAL.Book();
+                                model.BookName = Books.BookName;
+                                model.BookImage = Books.BookImage;
+                                model.ISBN = Books.ISBN;
+                                model.Description = Books.Description;
                                 model.CreatedDate = DateTime.UtcNow;
-                                model.CreatedBy = Roles.CreatedBy;
-                                model.IsDeleted = Roles.IsDeleted;
-                                _context.Roles.Add(model);
+                                model.CreatedBy = Books.CreatedBy;
+                                _context.Books.Add(model);
                                 userID = Convert.ToInt32(model.CreatedBy);
                                 _context.SaveChanges();
-                                result = model.RoleId;
+                                result = model.BookId;
                             }
                             else
                             {
-                                throw new Exception("Record already exists for " + Roles.RoleName);
+                                throw new Exception("Record already exists for " + Books.BookName);
                             }
                         }
                         _context.SaveChanges();
@@ -157,7 +160,7 @@ namespace E_Library.Business.Services
                 using (_context)
                 {
                     int userID;
-                    var col = _context.Roles.Where(x => x.RoleId == ID).FirstOrDefault();
+                    var col = _context.Books.Where(x => x.BookId == ID).FirstOrDefault();
                     if (col != null)
                     {
                         col.IsDeleted = true;

@@ -5,6 +5,48 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ELibraryDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorName" Type="varchar" MaxLength="100" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="ContactNumber" Type="varchar" MaxLength="20" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookName" Type="varchar" MaxLength="100" />
+          <Property Name="ISBN" Type="varchar" MaxLength="100" />
+          <Property Name="BookImage" Type="varchar(max)" />
+          <Property Name="Description" Type="varchar" MaxLength="500" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="BookAuthorMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookId" Type="int" />
+          <Property Name="AuthorId" Type="int" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="Roles">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -39,6 +81,30 @@
           <Property Name="UpdatedDate" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <Association Name="FK__BookAutho__Autho__32E0915F">
+          <End Role="Author" Type="Self.Author" Multiplicity="0..1" />
+          <End Role="BookAuthorMapping" Type="Self.BookAuthorMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="BookAuthorMapping">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookAutho__BookI__31EC6D26">
+          <End Role="Book" Type="Self.Book" Multiplicity="0..1" />
+          <End Role="BookAuthorMapping" Type="Self.BookAuthorMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookAuthorMapping">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Users__RoleId__267ABA7A">
           <End Role="Roles" Type="Self.Roles" Multiplicity="0..1" />
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
@@ -52,8 +118,19 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ELibraryDBModelStoreContainer">
+          <EntitySet Name="Author" EntityType="Self.Author" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Book" EntityType="Self.Book" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookAuthorMapping" EntityType="Self.BookAuthorMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BookAutho__Autho__32E0915F" Association="Self.FK__BookAutho__Autho__32E0915F">
+            <End Role="Author" EntitySet="Author" />
+            <End Role="BookAuthorMapping" EntitySet="BookAuthorMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookAutho__BookI__31EC6D26" Association="Self.FK__BookAutho__BookI__31EC6D26">
+            <End Role="Book" EntitySet="Book" />
+            <End Role="BookAuthorMapping" EntitySet="BookAuthorMapping" />
+          </AssociationSet>
           <AssociationSet Name="FK__Users__RoleId__267ABA7A" Association="Self.FK__Users__RoleId__267ABA7A">
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
@@ -63,6 +140,25 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ELibraryDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ELibraryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Roles" EntityType="ELibraryDBModel.Role" />
+          <EntitySet Name="Users" EntityType="ELibraryDBModel.User" />
+          <AssociationSet Name="FK__Users__RoleId__267ABA7A" Association="ELibraryDBModel.FK__Users__RoleId__267ABA7A">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="Authors" EntityType="ELibraryDBModel.Author" />
+          <EntitySet Name="Books" EntityType="ELibraryDBModel.Book" />
+          <EntitySet Name="BookAuthorMappings" EntityType="ELibraryDBModel.BookAuthorMapping" />
+          <AssociationSet Name="FK__BookAutho__Autho__32E0915F" Association="ELibraryDBModel.FK__BookAutho__Autho__32E0915F">
+            <End Role="Author" EntitySet="Authors" />
+            <End Role="BookAuthorMapping" EntitySet="BookAuthorMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BookAutho__BookI__31EC6D26" Association="ELibraryDBModel.FK__BookAutho__BookI__31EC6D26">
+            <End Role="Book" EntitySet="Books" />
+            <End Role="BookAuthorMapping" EntitySet="BookAuthorMappings" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -78,14 +174,6 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Users" Relationship="ELibraryDBModel.FK__Users__RoleId__267ABA7A" FromRole="Role" ToRole="User" />
         </EntityType>
-        <EntityContainer Name="ELibraryEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Roles" EntityType="Self.Role" />
-          <EntitySet Name="Users" EntityType="ELibraryDBModel.User" />
-          <AssociationSet Name="FK__Users__RoleId__267ABA7A" Association="ELibraryDBModel.FK__Users__RoleId__267ABA7A">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-        </EntityContainer>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
@@ -119,6 +207,76 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Author">
+          <Key>
+            <PropertyRef Name="AuthorId" />
+          </Key>
+          <Property Name="AuthorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ContactNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="BookAuthorMappings" Relationship="ELibraryDBModel.FK__BookAutho__Autho__32E0915F" FromRole="Author" ToRole="BookAuthorMapping" />
+        </EntityType>
+        <EntityType Name="Book">
+          <Key>
+            <PropertyRef Name="BookId" />
+          </Key>
+          <Property Name="BookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ISBN" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="BookImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="BookAuthorMappings" Relationship="ELibraryDBModel.FK__BookAutho__BookI__31EC6D26" FromRole="Book" ToRole="BookAuthorMapping" />
+        </EntityType>
+        <EntityType Name="BookAuthorMapping">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookId" Type="Int32" />
+          <Property Name="AuthorId" Type="Int32" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Author" Relationship="ELibraryDBModel.FK__BookAutho__Autho__32E0915F" FromRole="BookAuthorMapping" ToRole="Author" />
+          <NavigationProperty Name="Book" Relationship="ELibraryDBModel.FK__BookAutho__BookI__31EC6D26" FromRole="BookAuthorMapping" ToRole="Book" />
+        </EntityType>
+        <Association Name="FK__BookAutho__Autho__32E0915F">
+          <End Type="ELibraryDBModel.Author" Role="Author" Multiplicity="0..1" />
+          <End Type="ELibraryDBModel.BookAuthorMapping" Role="BookAuthorMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Author">
+              <PropertyRef Name="AuthorId" />
+            </Principal>
+            <Dependent Role="BookAuthorMapping">
+              <PropertyRef Name="AuthorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BookAutho__BookI__31EC6D26">
+          <End Type="ELibraryDBModel.Book" Role="Book" Multiplicity="0..1" />
+          <End Type="ELibraryDBModel.BookAuthorMapping" Role="BookAuthorMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Book">
+              <PropertyRef Name="BookId" />
+            </Principal>
+            <Dependent Role="BookAuthorMapping">
+              <PropertyRef Name="BookId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -128,15 +286,15 @@
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="ELibraryDBModel.Role">
               <MappingFragment StoreEntitySet="Roles">
-                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
-                <ScalarProperty Name="RoleLevel" ColumnName="RoleLevel" />
-                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
+                <ScalarProperty Name="RoleLevel" ColumnName="RoleLevel" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -158,6 +316,51 @@
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Authors">
+            <EntityTypeMapping TypeName="ELibraryDBModel.Author">
+              <MappingFragment StoreEntitySet="Author">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AuthorName" ColumnName="AuthorName" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Books">
+            <EntityTypeMapping TypeName="ELibraryDBModel.Book">
+              <MappingFragment StoreEntitySet="Book">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="BookImage" ColumnName="BookImage" />
+                <ScalarProperty Name="ISBN" ColumnName="ISBN" />
+                <ScalarProperty Name="BookName" ColumnName="BookName" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookAuthorMappings">
+            <EntityTypeMapping TypeName="ELibraryDBModel.BookAuthorMapping">
+              <MappingFragment StoreEntitySet="BookAuthorMapping">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="BookId" ColumnName="BookId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

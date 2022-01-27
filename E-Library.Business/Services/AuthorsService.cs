@@ -1,42 +1,43 @@
-﻿using E_Library.Business.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using E_Library.Business.Common;
 using E_Library.Business.Contracts;
 using E_Library.DAL;
 using E_Library.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace E_Library.Business.Services
 {
-    public class RolesService : BusinessBaseClass, IRoles
+    public class AuthorsService : BusinessBaseClass, IAuthors
     {
         private readonly ELibraryEntities _context;
-        public RolesService(ApplicationAPIKeys keys) : base(keys)
+        public AuthorsService(ApplicationAPIKeys keys) : base(keys)
         {
             _context = new ELibraryEntities(SecurityKeys.DatabaseConnectionString);
         }
 
-        public List<Entities.Roles> GetAll()
+        public List<Entities.Authors> GetAll()
         {
             try
             {
-                List<Entities.Roles> RoleList = new List<Entities.Roles>();
+                List<Entities.Authors> AuthorList = new List<Entities.Authors>();
 
                 using (_context)
                 {
-                    RoleList = _context.Roles.Where(x => x.IsDeleted == false).Select(x => new Entities.Roles
+                    AuthorList = _context.Authors.Where(x => x.IsDeleted == false).Select(x => new Entities.Authors
                     {
-                        RoleId = x.RoleId,
-                        RoleName = x.RoleName,
-                        RoleLevel = x.RoleLevel,
-                        RoleType = x.RoleType,
+                        AuthorId = x.AuthorId,
+                        AuthorName = x.AuthorName,
+                        Email = x.Email,
+                        ContactNumber = x.ContactNumber,
                         CreatedBy = x.CreatedBy,
                         CreatedDate = x.CreatedDate,
                         UpdatedBy = x.UpdatedBy,
                         UpdatedDate = x.UpdatedDate
                     }).ToList();
 
-                    return RoleList;
+                    return AuthorList;
                 }
             }
             catch (Exception ex)
@@ -45,34 +46,34 @@ namespace E_Library.Business.Services
             }
         }
 
-        public Entities.Roles GetData(int ID)
+        public Entities.Authors GetData(int ID)
         {
             try
             {
-                Entities.Roles edRoles = new Entities.Roles();
+                Entities.Authors edAuthors = new Entities.Authors();
                 using (_context)
                 {
-                    var daRoles = _context.Roles
-                        .Where(x => x.RoleId == ID && x.IsDeleted == false)
+                    var daAuthors = _context.Authors
+                        .Where(x => x.AuthorId == ID && x.IsDeleted == false)
                         .SingleOrDefault();
 
-                    if (daRoles != null)
+                    if (daAuthors != null)
                     {
-                        edRoles.RoleId = daRoles.RoleId;
-                        edRoles.RoleName = daRoles.RoleName;
-                        edRoles.RoleLevel = daRoles.RoleLevel;
-                        edRoles.RoleType = daRoles.RoleType;
-                        edRoles.CreatedBy = daRoles.CreatedBy;
-                        edRoles.CreatedDate = daRoles.CreatedDate;
-                        edRoles.UpdatedBy = daRoles.UpdatedBy;
-                        edRoles.UpdatedDate = daRoles.UpdatedDate;
+                        edAuthors.AuthorId = daAuthors.AuthorId;
+                        edAuthors.AuthorName = daAuthors.AuthorName;
+                        edAuthors.Email = daAuthors.Email;
+                        edAuthors.ContactNumber = daAuthors.ContactNumber;
+                        edAuthors.CreatedBy = daAuthors.CreatedBy;
+                        edAuthors.CreatedDate = daAuthors.CreatedDate;
+                        edAuthors.UpdatedBy = daAuthors.UpdatedBy;
+                        edAuthors.UpdatedDate = daAuthors.UpdatedDate;
                     }
                     else
                     {
                         throw new Exception("Record Not Found");
                     }
 
-                    return edRoles;
+                    return edAuthors;
                 }
             }
             catch (Exception ex)
@@ -81,7 +82,7 @@ namespace E_Library.Business.Services
             }
         }
 
-        public int Save(Entities.Roles Roles)
+        public int Save(Entities.Authors Authors)
         {
             int result = 0;
             try
@@ -91,44 +92,43 @@ namespace E_Library.Business.Services
                     int userID;
                     try
                     {
-                        if (Roles.RoleId > 0)
+                        if (Authors.AuthorId > 0)
                         {
-                            var col = _context.Roles.Where(x => x.RoleId == Roles.RoleId && x.IsDeleted == false).FirstOrDefault();
+                            var col = _context.Authors.Where(x => x.AuthorId == Authors.AuthorId && x.IsDeleted == false).FirstOrDefault();
                             if (col != null)
                             {
-                                DAL.Role model = new DAL.Role();
-                                col.RoleName = Roles.RoleName;
-                                col.RoleLevel = Roles.RoleLevel;
-                                col.RoleType = Roles.RoleType;
+                                DAL.Author model = new DAL.Author();
+                                col.AuthorName = Authors.AuthorName;
+                                col.Email = Authors.Email;
+                                col.ContactNumber = Authors.ContactNumber;
                                 col.UpdatedDate = DateTime.UtcNow;
-                                col.UpdatedBy = Roles.UpdatedBy;
+                                col.UpdatedBy = Authors.UpdatedBy;
                                 userID = Convert.ToInt32(col.UpdatedBy);
                                 _context.SaveChanges();
-                                result = col.RoleId;
+                                result = col.AuthorId;
                             }
                             else
                                 throw new Exception("Record Not Found");
                         }
                         else
                         {
-                            bool test = _context.Roles.Where(x => x.IsDeleted == false).Any(x => x.RoleName.ToUpper().Equals(Roles.RoleName.ToUpper()));
+                            bool test = _context.Authors.Where(x => x.IsDeleted == false).Any(x => x.AuthorName.ToUpper().Equals(Authors.AuthorName.ToUpper()));
                             if (!test)
                             {
-                                DAL.Role model = new DAL.Role();
-                                model.RoleName = Roles.RoleName;
-                                model.RoleLevel = Roles.RoleLevel;
-                                model.RoleType = Roles.RoleType;
+                                DAL.Author model = new DAL.Author();
+                                model.AuthorName = Authors.AuthorName;
+                                model.Email = Authors.Email;
+                                model.ContactNumber = Authors.ContactNumber;
                                 model.CreatedDate = DateTime.UtcNow;
-                                model.CreatedBy = Roles.CreatedBy;
-                                model.IsDeleted = Roles.IsDeleted;
-                                _context.Roles.Add(model);
+                                model.CreatedBy = Authors.CreatedBy;
+                                _context.Authors.Add(model);
                                 userID = Convert.ToInt32(model.CreatedBy);
                                 _context.SaveChanges();
-                                result = model.RoleId;
+                                result = model.AuthorId;
                             }
                             else
                             {
-                                throw new Exception("Record already exists for " + Roles.RoleName);
+                                throw new Exception("Record already exists for " + Authors.AuthorId);
                             }
                         }
                         _context.SaveChanges();
@@ -157,7 +157,7 @@ namespace E_Library.Business.Services
                 using (_context)
                 {
                     int userID;
-                    var col = _context.Roles.Where(x => x.RoleId == ID).FirstOrDefault();
+                    var col = _context.Authors.Where(x => x.AuthorId == ID).FirstOrDefault();
                     if (col != null)
                     {
                         col.IsDeleted = true;

@@ -5,9 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="50ccbe748cf74528ae5af7923f29ad22" Name="Diagram1">
-        <EntityTypeShape EntityType="ELibraryDBModel.Role" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ELibraryDBModel.User" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="ELibraryDBModel.Role" Width="1.5" PointX="0.75" PointY="1.625" />
+        <EntityTypeShape EntityType="ELibraryDBModel.User" Width="1.5" PointX="3" PointY="1" />
         <AssociationConnector Association="ELibraryDBModel.FK__Users__RoleId__267ABA7A" />
+        <EntityTypeShape EntityType="ELibraryDBModel.Author" Width="1.5" PointX="5.375" PointY="1" />
+        <EntityTypeShape EntityType="ELibraryDBModel.Book" Width="1.5" PointX="5.375" PointY="4.875" />
+        <EntityTypeShape EntityType="ELibraryDBModel.BookAuthorMapping" Width="1.5" PointX="7.625" PointY="1" />
+        <AssociationConnector Association="ELibraryDBModel.FK__BookAutho__Autho__32E0915F" />
+        <AssociationConnector Association="ELibraryDBModel.FK__BookAutho__BookI__31EC6D26" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
