@@ -18,7 +18,7 @@ namespace E_Library.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetAll")]
-        public HttpResponseMessage RolesList()
+        public HttpResponseMessage UsersList()
         {
             try
             {
