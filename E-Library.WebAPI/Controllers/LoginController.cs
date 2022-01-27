@@ -14,13 +14,13 @@ namespace E_Library.WebAPI.Controllers
     public class LoginController : ApiController
     {
         ILogin LoginService = new LoginService(WebApiApplication.AppKeys);
-        [HttpGet]
+        [HttpPost]
         [Route("Authenticate_User")]
-        public HttpResponseMessage Authenticate_User(string UserName, string UserPassword)
+        public HttpResponseMessage Authenticate_User(Entities.Users user)
         {
             try
             {
-                var result = LoginService.Authenticate_User(UserName, UserPassword);
+                var result = LoginService.Authenticate_User(user);
                 if (result != null)
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, result);

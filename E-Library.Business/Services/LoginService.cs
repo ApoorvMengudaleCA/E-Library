@@ -16,26 +16,24 @@ namespace E_Library.Business.Services
         {
             _context = new ELibraryEntities(SecurityKeys.DatabaseConnectionString);
         }
-        public Entities.Users Authenticate_User(string UserName, string UserPassword)
+        public Entities.Users Authenticate_User(Entities.Users users)
         {
             try
             {
-                Entities.Users edLogin = new Entities.Users();
+                Entities.Users edUsers = new Entities.Users();
                 using (_context)
                 {
-                    var daLogin = _context.Users
-                        .Where(x => x.UserName == UserName && x.UserPassword == UserPassword && x.IsActive == true && x.IsDeleted == false)
-                        .SingleOrDefault();
-                    if (daLogin != null)
+                    var col = _context.Users.Where(x => x.UserName == users.UserName && x.UserPassword == users.UserPassword && x.IsDeleted == false).FirstOrDefault();
+                    if (col != null)
                     {
-                        edLogin.UserId = daLogin.UserId;
+                        edUsers.UserId = col.UserId;
                     }
                     else
                     {
                         throw new Exception("Record Not Found");
                     }                  
                     
-                    return edLogin;
+                    return edUsers;
                 }
             }
             catch (Exception ex)

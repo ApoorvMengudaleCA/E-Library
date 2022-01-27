@@ -8,6 +8,6 @@ namespace E_Library.Business.Contracts
 {
     public interface ILogin
     {
-        Entities.Users Authenticate_User(string UserName, string UserPassword);
+        Entities.Users Authenticate_User(Entities.Users users);
     }
 }
