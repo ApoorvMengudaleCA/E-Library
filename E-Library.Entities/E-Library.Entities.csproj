@@ -78,6 +78,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationAPIKeys.cs" />
+    <Compile Include="Authors.cs" />
+    <Compile Include="BookAuthorMapping.cs" />
+    <Compile Include="Books.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Roles.cs" />
     <Compile Include="Users.cs" />
