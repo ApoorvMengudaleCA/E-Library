@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using E_Library.Business.Common;
+﻿using E_Library.Business.Common;
 using E_Library.Business.Contracts;
 using E_Library.DAL;
 using E_Library.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace E_Library.Business.Services
 {
-    public class RolesService: BusinessBaseClass, IRoles
+    public class RolesService : BusinessBaseClass, IRoles
     {
         private readonly ELibraryEntities _context;
         public RolesService(ApplicationAPIKeys keys) : base(keys)
@@ -121,6 +120,7 @@ namespace E_Library.Business.Services
                                 model.RoleType = Roles.RoleType;
                                 model.CreatedDate = DateTime.UtcNow;
                                 model.CreatedBy = Roles.CreatedBy;
+                                model.IsDeleted = Roles.IsDeleted;
                                 _context.Roles.Add(model);
                                 userID = Convert.ToInt32(model.CreatedBy);
                                 _context.SaveChanges();
