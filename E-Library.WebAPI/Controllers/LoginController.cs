@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using E_Library.Business.Contracts;
+using E_Library.Business.Services;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using E_Library.Business.Contracts;
-using E_Library.Business.Services;
 
 namespace E_Library.WebAPI.Controllers
 {
@@ -35,7 +33,7 @@ namespace E_Library.WebAPI.Controllers
             {
                 if (ex.Message.Contains("Record Not Found"))
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, ex.Message);
+                    return Request.CreateResponse(HttpStatusCode.OK, ex.Message);
                 }
                 else
                 {
