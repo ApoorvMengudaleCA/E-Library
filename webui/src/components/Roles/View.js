@@ -1,21 +1,37 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toggleContext, roleDataContext } from "./index.js";
-import { toast } from "react-toastify";
 import axios from "axios";
+import useLoader from "../Hooks/useLoader.js";
 
 const View = () => {
   const navigate = useNavigate();
   const { setToggle } = useContext(toggleContext);
-  const { roleData, setRoleData } = useContext(roleDataContext);
+  const [roleData, setRoleData] = useState({});
   const handleBack = () => {
     setToggle(false);
     setRoleData({});
     navigate("/ManageRoles");
   };
 
+  const { id } = useParams();
+  useEffect(() => {
+    showLoader();
+    async function fetchData() {
+      await axios
+        .get(`https://e-library.somee.com/Roles/GetDataById?ID=${id}`, {})
+        .then((res) => {
+          setRoleData(res.data);
+          hideLoader();
+        });
+    }
+    fetchData();
+  }, []);
+  const [loader, showLoader, hideLoader] = useLoader();
   return (
     <div className="container">
+      {loader}
+
       <div className="py-5 px-5">
         <div>
           <button className="btn" onClick={handleBack}>

@@ -6,7 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../NavBar";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import Loader from "../Loader.js";
+import useLoader from "../Hooks/useLoader.js";
 
 export const toggleContext = createContext();
 export const roleDataContext = createContext();
@@ -17,8 +17,12 @@ const ManageRoles = () => {
   const [roleData, setRoleData] = useState({});
   const navigate = useNavigate();
 
+  const [loader, showLoader, hideLoader] = useLoader();
+
   useEffect(() => {
+    showLoader();
     getRolesData();
+    hideLoader();
   }, [toggle]);
 
   // useEffect(() => {
@@ -26,16 +30,19 @@ const ManageRoles = () => {
   // }, [roles]);
 
   const handleAdd = () => {
+    showLoader();
     setToggle(true);
     navigate("/ManageRoles/Create");
   };
   const handleView = (id) => {
+    showLoader();
     loadRole(id);
     setToggle(true);
     navigate(`/ManageRoles/View/${id}`);
   };
 
   const handleEdit = (id) => {
+    showLoader();
     loadRole(id);
     setToggle(true);
     navigate(`/ManageRoles/Edit/${id}`);
@@ -49,6 +56,7 @@ const ManageRoles = () => {
         {
           label: "Yes",
           onClick: () => {
+            showLoader();
             axios
               .get(
                 `http://e-library.somee.com/Roles/Delete?Id=${id}&UserId=${localUser.UserId}`
@@ -58,8 +66,10 @@ const ManageRoles = () => {
                   getRolesData();
                   toast.success("Role deleted successfully!");
                   navigate("/ManageRoles");
+                  hideLoader();
                 } else {
                   toast.error("Failed to delete role!");
+                  hideLoader();
                 }
               });
           },
@@ -93,6 +103,7 @@ const ManageRoles = () => {
   return (
     <toggleContext.Provider value={toggleContextValues}>
       <roleDataContext.Provider value={roleDataContextValues}>
+        {loader}
         <Navbar />
         {toggle && <Outlet />}
         {!toggle && (

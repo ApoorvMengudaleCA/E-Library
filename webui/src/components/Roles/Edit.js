@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toggleContext } from "./index.js";
 import { commonContext } from "../App.js";
 import { toast } from "react-toastify";
+import useLoader from "../Hooks/useLoader.js";
 
 const Edit = () => {
   const [formValues, setformValues] = useState({
@@ -12,18 +13,17 @@ const Edit = () => {
     RoleType: "",
   });
   const { id } = useParams();
-
-  // useEffect(async () => {
-  //   await axios
-  //     .get(`https://e-library.somee.com/Roles/GetDataById?ID=${id}`, {})
-  //     .then((res) => setformValues(res.data));
-  // }, []);
+  const [loader, showLoader, hideLoader] = useLoader();
 
   useEffect(() => {
+    showLoader();
     async function fetchData() {
       await axios
         .get(`https://e-library.somee.com/Roles/GetDataById?ID=${id}`, {})
-        .then((res) => setformValues(res.data));
+        .then((res) => {
+          setformValues(res.data);
+          hideLoader();
+        });
     }
     fetchData();
   }, []);
@@ -51,6 +51,7 @@ const Edit = () => {
     if (Object.keys(errors).length === 0 && isSubmit) {
       formValues.UpdatedBy = localUser.UserId;
       formValues.RoleType = formValues.RoleType.toUpperCase();
+      showLoader();
       axios
         .post(
           "http://e-library.somee.com/Roles/Save",
@@ -63,8 +64,10 @@ const Edit = () => {
             setformValues({ RoleName: "", RoleLevel: "", RoleType: "" });
             toast.success("Role updated successfully!");
             setToggle(false);
+            hideLoader();
             navigate("/ManageRoles");
           } else {
+            hideLoader();
             navigate("/ManageRoles/Create");
             toast.error("Failed to update role!");
           }
@@ -152,6 +155,7 @@ const Edit = () => {
           </form>
         </div>
       </div>
+      {loader}
     </div>
   );
 };

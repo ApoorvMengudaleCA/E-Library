@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toggleContext } from "./index.js";
 import { commonContext } from "../App.js";
 import { toast } from "react-toastify";
+import useLoader from "../Hooks/useLoader.js";
 
 const Create = () => {
   const [formValues, setformValues] = useState({
@@ -13,6 +14,7 @@ const Create = () => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [loader, showLoader, hideLoader] = useLoader();
 
   const { setToggle } = useContext(toggleContext);
   const { headers, localUser, getRolesData } = useContext(commonContext);
@@ -35,6 +37,7 @@ const Create = () => {
       formValues.isDeleted = 0;
       formValues.CreatedBy = localUser.UserId;
       formValues.RoleType = formValues.RoleType.toUpperCase();
+      showLoader();
       axios
         .post(
           "http://e-library.somee.com/Roles/Save",
@@ -47,8 +50,10 @@ const Create = () => {
             setformValues({ RoleName: "", RoleLevel: "", RoleType: "" });
             toast.success("Role saved successfully!");
             setToggle(false);
+            hideLoader();
             navigate("/ManageRoles");
           } else {
+            hideLoader();
             navigate("/ManageRoles/Create");
             toast.error("Failed to save role!");
           }
@@ -89,6 +94,7 @@ const Create = () => {
 
   return (
     <div className="container">
+      {loader}
       <div className="py-5 px-5">
         <div>
           <button className="btn" onClick={handleBack}>

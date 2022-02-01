@@ -1,23 +1,12 @@
-import { useRef, useState, useEffect } from "react";
+import React from "react";
+import loaderGif from "../Resources/Loader/Loader.svg";
 
 const Loader = () => {
-  const defaultText = "Load";
-  const loadingText = "Loading...";
-  const [isLoading, setLoading] = useState(false);
-  const element = useRef(null);
-
-  useEffect(() => {
-    if (isLoading) {
-      element.current.disabled = true;
-      element.current.innerHTML =
-        '<i class="fas fa-spinner fa-spin"></i> ' + loadingText;
-    } else {
-      element.current.disabled = false;
-      element.current.innerHTML = defaultText;
-    }
-  }, [isLoading]);
-
-  return [element, setLoading];
+  return (
+    <div className="fp-container">
+      <img src={loaderGif} className="fp-loader" alt="loading" />
+    </div>
+  );
 };
 
 export default Loader;

@@ -5,6 +5,7 @@ import { commonContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import useLoader from "../Hooks/useLoader";
 
 export default function Login() {
   const { getCurrentUserData, headers, setAuth } = useContext(commonContext);
@@ -13,6 +14,8 @@ export default function Login() {
     UserPassword: "",
   });
   const navigate = useNavigate();
+
+  const [loader, showLoader, hideLoader] = useLoader();
 
   const [warnusername, setwarnusername] = useState(false);
   const [warnpassword, setwarnpassword] = useState(false);
@@ -33,6 +36,7 @@ export default function Login() {
   };
 
   const submitForm = async (e) => {
+    showLoader();
     e.preventDefault();
     setwarnusername(false);
     setwarnpassword(false);
@@ -52,15 +56,18 @@ export default function Login() {
         )
         .then((res) => {
           if (res.data === "Record Not Found") {
+            hideLoader();
             setAuth(false);
             navigate("/Login");
             toast.error("Login failed, Please try again!");
           } else if (res.data.UserId > 0) {
             getCurrentUserData(res.data.UserId);
             setAuth(true);
+            hideLoader();
             toast.success("Logged in successfully!");
             navigate("/");
           } else {
+            hideLoader();
             setAuth(false);
             navigate("/Login");
             toast.error("Login failed, Please try again!");
@@ -68,6 +75,7 @@ export default function Login() {
         })
         .catch((res) => {
           setAuth(false);
+          hideLoader();
           navigate("/Login");
           toast.danger("Login Failed!");
         });
@@ -88,6 +96,7 @@ export default function Login() {
 
   return (
     <>
+      {loader}
       <div className="container-custom">
         <div className="card">
           <div className="title">
