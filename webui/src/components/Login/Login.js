@@ -35,6 +35,32 @@ export default function Login() {
     });
   };
 
+  async function getToken(uname, upass) {
+    var details = {
+      username: uname,
+      password: upass,
+      grant_type: "password",
+    };
+
+    var formBody = [];
+    for (var property in details) {
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+    formBody = formBody.join("&");
+
+    fetch("https://e-library.somee.com/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: formBody,
+    }).then((res) => {
+      sessionStorage.setItem("token", JSON.stringify(res));
+    });
+  }
+
   const submitForm = async (e) => {
     showLoader();
     e.preventDefault();
@@ -62,6 +88,7 @@ export default function Login() {
             toast.error("Login failed, Please try again!");
           } else if (res.data.UserId > 0) {
             getCurrentUserData(res.data.UserId);
+            getToken(inputtext.UserName, inputtext.UserPassword);
             setAuth(true);
             hideLoader();
             toast.success("Logged in successfully!");

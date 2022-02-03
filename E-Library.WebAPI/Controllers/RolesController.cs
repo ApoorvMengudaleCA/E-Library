@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using E_Library.Business.Contracts;
+using E_Library.Business.Services;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using E_Library.Business.Contracts;
-using E_Library.Business.Services;
 
 namespace E_Library.WebAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("Roles")]
     public class RolesController : ApiController
     {

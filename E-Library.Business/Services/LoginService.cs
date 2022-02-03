@@ -3,9 +3,7 @@ using E_Library.Business.Contracts;
 using E_Library.DAL;
 using E_Library.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace E_Library.Business.Services
 {
@@ -31,8 +29,8 @@ namespace E_Library.Business.Services
                     else
                     {
                         throw new Exception("Record Not Found");
-                    }                  
-                    
+                    }
+
                     return edUsers;
                 }
             }
@@ -40,6 +38,31 @@ namespace E_Library.Business.Services
             {
                 throw ex;
             }
+        }
+        public bool Login(string userName, string password)
+        {
+            try
+            {
+
+                var userInfo = _context.Users.Where(x => x.UserName == userName && x.UserPassword == password).FirstOrDefault();
+                if (userInfo != null)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public string GetUserRole(string userName)
+        {
+            return _context.Users.Where(x => x.UserName == userName).Select(y => y.Role.RoleName).FirstOrDefault();
         }
     }
 }
